@@ -158,13 +158,17 @@ public:
                 std::cout<<masini[i].getMarca()<<" "<<masini[i].getModel()<<" "<<masini[i].getNrInmatriculare()<<" capacitate"<<masini[i].getCapacitate()<<" tarif/ora: "<<masini[i].getTarifOra()<<"\n";
         std::cout<<"\nAlege numarul de inmatriculare pentru masina pe care vrei sa o inchiriezi:";
         int nr_inmatriculare;
+        int k=1;//semnaleaza faptul ca a fost gasit nr de inmatriculare care introdus
         std::cin>>nr_inmatriculare;
         for(int i=0;i<masini.size();i++)
             if(masini[i].getNrInmatriculare()==nr_inmatriculare)
             {client.setMasina1(masini[i]);
+                k=0;
                 status_inchirieri[i]=1;
                 break;
             }
+        if(k==1)
+            std::cout<<"Nu a fost gasiit numarul de inmatriculare introdus\n";
         return client;
     }
 
@@ -185,18 +189,6 @@ public:
     }
     void adauga_masina(const class masina & masina ){
         masini.push_back(masina);
-    }
-    void set_status_inchiriere(){//o functie care semnalizeaza cu 1, in vectorul status_inchirieri, daca masina aleasa este deja utilizata
-        for(int i=0;i<masini.size();i++) {
-            for(int j=0;j<clienti.size();j++)
-                if(masini[i].getNrInmatriculare()==clienti[j].getMasina().getNrInmatriculare())
-                    status_inchirieri[i]=1;
-                else
-                    status_inchirieri[i]=0;
-
-        }
-
-
     }
 
     void setMasini(const std::vector<struct masina> &masini) {
