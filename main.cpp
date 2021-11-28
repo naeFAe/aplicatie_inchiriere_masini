@@ -62,6 +62,18 @@ public:
         return tarifOra;
     }
 
+    const std::string &getMarca() const {
+        return marca;
+    }
+
+    const std::string &getCuloare() const {
+        return culoare;
+    }
+
+    const std::string &getCapacitate() const {
+        return capacitate;
+    }
+
 };
 
 class client{
@@ -97,13 +109,13 @@ public:
         if(nr_inchirieri>2 && nr_inchirieri<5)
             return nrOre*masina1.getTarifOra()-(nrOre*masina1.getTarifOra())/0.05;
         else
-            if(nr_inchirieri>4)
-                return nrOre*masina1.getTarifOra()-(nrOre*masina1.getTarifOra())/0.10;
-            else
-                if(nr_inchirieri==0)
-                    return nrOre*masina1.getTarifOra()-(nrOre*masina1.getTarifOra())/0.03;
-                else
-                    return nrOre*masina1.getTarifOra();
+        if(nr_inchirieri>4)
+            return nrOre*masina1.getTarifOra()-(nrOre*masina1.getTarifOra())/0.10;
+        else
+        if(nr_inchirieri==0)
+            return nrOre*masina1.getTarifOra()-(nrOre*masina1.getTarifOra())/0.03;
+        else
+            return nrOre*masina1.getTarifOra();
     }
 
     const std::string &getUser() const {
@@ -136,17 +148,17 @@ public:
 
 
     class client set_masina_client(class client client){
-        std::cout<<"Masinile care sunt disponibile sunt:\n";
+        std::cout<<"Masinile care sunt disponibile sunt:\n\n";
         for(int i=0;i<masini.size();i++)
             if(status_inchirieri[i]==0)
-                std::cout<<masini[i].getModel()<<" "<<masini[i].getNrInmatriculare()<<"\n";
-        std::cout<<"Alege numarul de inmatriculare pentru masina pe care vrei sa o inchiriezi:";
+                std::cout<<masini[i].getMarca()<<" "<<masini[i].getModel()<<" "<<masini[i].getNrInmatriculare()<<" capacitate"<<masini[i].getCapacitate()<<" tarif/ora: "<<masini[i].getTarifOra()<<"\n";
+        std::cout<<"\nAlege numarul de inmatriculare pentru masina pe care vrei sa o inchiriezi:";
         int nr_inmatriculare;
         std::cin>>nr_inmatriculare;
         for(int i=0;i<masini.size();i++)
             if(masini[i].getNrInmatriculare()==nr_inmatriculare)
             {client.setMasina1(masini[i]);
-            status_inchirieri[i]=1;
+                status_inchirieri[i]=1;
                 break;
             }
         return client;
@@ -172,11 +184,11 @@ public:
     }
     void set_status_inchiriere(){//o functie care semnalizeaza cu 1, in vectorul status_inchirieri, daca masina aleasa este deja utilizata
         for(int i=0;i<masini.size();i++) {
-           for(int j=0;j<clienti.size();j++)
-               if(masini[i].getNrInmatriculare()==clienti[j].getMasina().getNrInmatriculare())
-                   status_inchirieri[i]=1;
-               else
-                   status_inchirieri[i]=0;
+            for(int j=0;j<clienti.size();j++)
+                if(masini[i].getNrInmatriculare()==clienti[j].getMasina().getNrInmatriculare())
+                    status_inchirieri[i]=1;
+                else
+                    status_inchirieri[i]=0;
 
         }
 
@@ -189,26 +201,40 @@ public:
 
 };
 int main() {
-    //std::string a;
-    //std::cin>>a;
+
     masina masina_default{"default","default","default",0,"default",0};
-    masina nr1{"bmw","Mustang","negru",1234,"5",40};
-    masina nr2{"audi","Mustang","negru",1234,"5",42};
-    //aplicatie1 afis_baza_de_date();
-    //masina nr2=nr1;
-    //client dorel{1,"Dorel",02323141241,2,"Str Mamei lui nr 25","dorel95","dorelejmek",2,nr1};
+    masina nr1{"Bmw","Seria 3","negru",1234,"5",40};
+    masina nr2{"Audi","A6","negru",1235,"5",42};
+    masina nr3=nr1;
+    nr3.setCuloare("verde");
+    std::cout<<nr3.getCuloare();
+    nr3.setNrInmatriculare1(8765);
+    masina nr4=nr2;
+    nr4.setNrInmatriculare1(4000);
     client andrei{2,"Andrei",04124141,6,"Str tatalui nr 45","andrei12","andrei12345",4,nr1};
-    //nr1.setNrInmatriculare1(12445555);
-    //nr1.setCuloare("rosu");
+
     aplicatie1 parc_auto{{1,0},{andrei},{nr1,nr2}};
-    parc_auto.afis_baza_de_date();
+    parc_auto.adauga_masina({nr3});
+    parc_auto.adauga_status(0);
+    parc_auto.adauga_masina({nr4});
+    parc_auto.adauga_status(0);
     std::cout<<"\n";
+
     client dorel{1,"Dorel",02323141241,2,"Str Mamei lui nr 25","dorel95","dorelejmek",2,masina_default};
-    dorel = parc_auto.set_masina_client(dorel);
-    //std::cout<<dorel;
+    int x=1;//o vaaribila care primeste valoarea 1 si verifica daca clientul vrea sa inchirieze mai multe masini
+    while(x==1){
+        andrei=parc_auto.set_masina_client(andrei);
+        std::cout<<"Apasa tasta 1 pentru as selecta inca o masina: ";
+        std::cin>>x;
+    }
+    x=1;
+    while(x==1){
+        dorel = parc_auto.set_masina_client(dorel);
+        std::cout<<"Apasa tasta 1 pentru as selecta inca o masina: ";
+        std::cin>>x;
+    }
     parc_auto.adauga_client(dorel);
     parc_auto.afis_baza_de_date();
-    //client dorel{1,"Dorel",02323141241,2,"Str Mamei lui nr 25","dorel95","dorelejmek",2,parc_auto.set_masina_client(dorel)};
 
     return 0;
 }
