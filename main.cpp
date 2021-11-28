@@ -129,8 +129,11 @@ class aplicatie1{
     std::vector<class client>clienti;
     std::vector<class masina>masini;
 public:
-    aplicatie1(const std::vector<struct client> &clienti, const std::vector<struct masina> &masini) : clienti(clienti),
-                                                                                                      masini(masini) {}
+    aplicatie1(const std::vector<int> &statusInchirieri, const std::vector<struct client> &clienti,
+               const std::vector<struct masina> &masini) : status_inchirieri(statusInchirieri), clienti(clienti),
+                                                           masini(masini) {}
+
+
 
     class client set_masina_client(class client client){
         std::cout<<"Masinile care sunt disponibile sunt:\n";
@@ -157,8 +160,11 @@ public:
         for(const auto &masina : masini)
             std::cout<<masina<<" ";
     }
-
-    void adauga_masina(const class client & client ){
+    void adauga_status(const int & status)
+    {
+        status_inchirieri.push_back(status);
+    }
+    void adauga_client(const class client & client ){
         clienti.push_back(client);
     }
     void adauga_masina(const class masina & masina ){
@@ -177,15 +183,32 @@ public:
 
     }
 
+    void setMasini(const std::vector<struct masina> &masini) {
+        aplicatie1::masini = masini;
+    }
+
 };
 int main() {
-    masina nr1{"Ford","Mustang","negru",1234,"5",40};
-    masina nr2=nr1;
-    client dorel{1,"Dorel",02323141241,2,"Str Mamei lui nr 25","dorel95","dorelejmek",2,nr1};
-    client andrei{2,"Andrei",04124141,6,"Str tatalui nr 45","andrei12","andrei12345",4,nr2};
-    nr1.setNrInmatriculare1(12445555);
-    nr1.setCuloare("rosu");
-    aplicatie1 parc_auto{{dorel,andrei},{nr1}};
+    //std::string a;
+    //std::cin>>a;
+    masina masina_default{"default","default","default",0,"default",0};
+    masina nr1{"bmw","Mustang","negru",1234,"5",40};
+    masina nr2{"audi","Mustang","negru",1234,"5",42};
+    //aplicatie1 afis_baza_de_date();
+    //masina nr2=nr1;
+    //client dorel{1,"Dorel",02323141241,2,"Str Mamei lui nr 25","dorel95","dorelejmek",2,nr1};
+    client andrei{2,"Andrei",04124141,6,"Str tatalui nr 45","andrei12","andrei12345",4,nr1};
+    //nr1.setNrInmatriculare1(12445555);
+    //nr1.setCuloare("rosu");
+    aplicatie1 parc_auto{{1,0},{andrei},{nr1,nr2}};
+    parc_auto.afis_baza_de_date();
+    std::cout<<"\n";
+    client dorel{1,"Dorel",02323141241,2,"Str Mamei lui nr 25","dorel95","dorelejmek",2,masina_default};
+    dorel = parc_auto.set_masina_client(dorel);
+    //std::cout<<dorel;
+    parc_auto.adauga_client(dorel);
+    parc_auto.afis_baza_de_date();
+    //client dorel{1,"Dorel",02323141241,2,"Str Mamei lui nr 25","dorel95","dorelejmek",2,parc_auto.set_masina_client(dorel)};
 
     return 0;
 }
