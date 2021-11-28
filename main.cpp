@@ -106,14 +106,14 @@ public:
     }
 
     int set_pret_inchiriere(){//aplic o reducere celor care au inchiriat mai mult de 2 masini si celor ce sunt la prima inchiriere
-        if(nr_inchirieri>2 && nr_inchirieri<5)
-            return nrOre*masina1.getTarifOra()-(nrOre*masina1.getTarifOra())/0.05;
+        if(nr_inchirieri>2 && nr_inchirieri<5){
+            return nrOre*masina1.getTarifOra()-(nrOre*masina1.getTarifOra())*0.05;}
         else
         if(nr_inchirieri>4)
-            return nrOre*masina1.getTarifOra()-(nrOre*masina1.getTarifOra())/0.10;
+            return nrOre*masina1.getTarifOra()-(nrOre*masina1.getTarifOra())*0.10;
         else
         if(nr_inchirieri==0)
-            return nrOre*masina1.getTarifOra()-(nrOre*masina1.getTarifOra())/0.03;
+            return nrOre*masina1.getTarifOra()-(nrOre*masina1.getTarifOra())*0.03;
         else
             return nrOre*masina1.getTarifOra();
     }
@@ -133,6 +133,10 @@ public:
     void setMasina1(const masina &masina1) {
         client::masina1 = masina1;
     }
+
+    int getNrOre() const {
+        return nrOre;
+    }
 };
 
 
@@ -147,7 +151,7 @@ public:
 
 
 
-    class client set_masina_client(class client client){
+    class client set_masina_client(class client client){//inlocuieste masina introdusa initial cu o masina introdusa de client la tstatura
         std::cout<<"Masinile care sunt disponibile sunt:\n\n";
         for(int i=0;i<masini.size();i++)
             if(status_inchirieri[i]==0)
@@ -207,7 +211,7 @@ int main() {
     masina nr2{"Audi","A6","negru",1235,"5",42};
     masina nr3=nr1;
     nr3.setCuloare("verde");
-    std::cout<<nr3.getCuloare();
+
     nr3.setNrInmatriculare1(8765);
     masina nr4=nr2;
     nr4.setNrInmatriculare1(4000);
@@ -223,13 +227,17 @@ int main() {
     client dorel{1,"Dorel",02323141241,2,"Str Mamei lui nr 25","dorel95","dorelejmek",2,masina_default};
     int x=1;//o vaaribila care primeste valoarea 1 si verifica daca clientul vrea sa inchirieze mai multe masini
     while(x==1){
+        std::cout<<andrei.getUser()<<"\n\n";
         andrei=parc_auto.set_masina_client(andrei);
+        std::cout<<"Pretul inchirerii masinii "<<andrei.getMasina().getMarca()<<" "<<andrei.getMasina().getModel()<<" "<<andrei.getMasina().getNrInmatriculare()<<" este de "<<andrei.set_pret_inchiriere()<<" pe durata de "<<andrei.getNrOre()<<" ore\n";
         std::cout<<"Apasa tasta 1 pentru as selecta inca o masina: ";
         std::cin>>x;
     }
     x=1;
     while(x==1){
+        std::cout<<dorel.getUser()<<"\n\n";
         dorel = parc_auto.set_masina_client(dorel);
+        std::cout<<"Pretul inchirerii masinii "<<dorel.getMasina().getMarca()<<" "<<dorel.getMasina().getModel()<<" "<<dorel.getMasina().getNrInmatriculare()<<" este de "<<dorel.set_pret_inchiriere()<<" pe durata de "<<dorel.getNrOre()<<" ore\n";
         std::cout<<"Apasa tasta 1 pentru as selecta inca o masina: ";
         std::cin>>x;
     }
